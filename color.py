@@ -27,19 +27,26 @@ labels = np.arange(0, len(np.unique(clt.labels_)) + 1)
 counts, _ = np.histogram(clt.labels_, bins = labels)
 
 #RGB values of the cluster centers
-clt.cluster_centers_
+x = clt.cluster_centers_
 
 #Extract most dominant color of image from # of counts
 
-#detecting the closest color to commonly known colors
-import csv
-from colormath.color_objects import LabColor
-reader = csv.DictReader('lab_matrix.csv')
-lab_matrix = np.array([row.values() for row in reader])
 
-# the reference color
-color = LabColor(lab_l=69.34,lab_a=-0.88,lab_b=-52.57)
+#######Color classifier
 
-# find the closest match to `color` in `lab_matrix`
-delta = color.delta_e_matrix(lab_matrix)
-nearest_color = lab_matrix[np.argmin(delta)]
+def classify(rgb):
+    
+    colors = {"red": (255, 0, 0),
+              "green": (0,255,0),
+              "blue": (0,0,255),
+              "pink": (255,20,147),
+              "purple": (128,0,128),
+              "gray": (128,128,128),
+              "black": (0,0,0),
+              "white": (255,255,255),
+              "teal": (0,128,128),
+              "orange": (255,165,0)}
+    manhattan = lambda x,y : abs(x[0] - y[0]) + abs(x[1] - y[1]) + abs(x[2] - y[2]) 
+    distances = {k: manhattan(v, rgb) for k, v in colors.items()}
+    color = min(distances, key=distances.get)
+    return color
