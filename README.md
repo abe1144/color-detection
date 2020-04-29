@@ -1,3 +1,3 @@
 # color-detection
 
-Detect most dominant color in a image using python
+Detect most dominant color in a image using Clustering
